@@ -1,0 +1,6 @@
+The file `kardex-proxy.py` in this repository is a copy of
+`odoo/external-src/stock-logistics-warehouse/stock_vertical_lift_kardex/proxy/kardex-proxy.py`
+(we use a copy because it is not possible to work with a symbolic link outside
+the directory containing the Dockerfile. When the file is updated you need to
+publish a new version of the container.
+
