@@ -24,24 +24,48 @@ jobs:
       - name: Set ENV for specific branch
         if: ${{ startsWith(github.ref, 'refs/heads/') && !endsWith(github.ref, '/master') }}
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}-${GITHUB_SHA}" >> $GITHUB_ENV
-      - name: Login to GHCR
+      - name: Login to GHCR Shelter
         uses: docker/login-action@v1
         with:
           registry: shelterdev.azurecr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.SHELTER_DEV_ACR_USERNAME }}
+          password: ${{ secrets.SHELTER_DEV_ACR_PASSWORD }}
+      #- name: Login to GHCR Prod
+      #  uses: docker/login-action@v1
+      #  with:
+      #    registry: shelterdev.azurecr.io
+      #    username: ${{ github.repository_owner }}
+      #    password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta-proxy
+        uses: docker/metadata-action@v5.0.0
+        with:
+          images: |
+            shelterdev.azurecr.io/kardex-proxy
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta-sim
+        uses: docker/metadata-action@v5.0.0
+        with:
+          images: |
+            shelterdev.azurecr.io/kardex-sim
+
+
       - name: Build + Push Kardex Sim
         uses: docker/build-push-action@v2
         with:
           context: ./kardex-sim
           platforms: linux/amd64
           push: true
-          tags: shelterdev.azurecr.io/${{ github.repository }}:kardex-sim-${{ env.RELEASE_VERSION }}
+          tags: ${{ steps.meta-sim.outputs.tags }}
+          labels: ${{ steps.meta-sim.outputs.labels }}
       - name: Build + Push Kardex Proxy
         uses: docker/build-push-action@v2
         with:
           context: ./kardex-proxy
           platforms: linux/amd64
           push: true
-          tags: shelterdev.azurecr.io/${{ github.repository }}:kardex-proxy-${{ env.RELEASE_VERSION }}
+          tags: ${{ steps.meta-proxy.outputs.tags }}
+          labels: ${{ steps.meta-proxy.outputs.labels }}
 
