@@ -42,14 +42,14 @@ jobs:
         uses: docker/metadata-action@v5.0.0
         with:
           images: |
-            shelterdev.azurecr.io/kardex-proxy
+            shelterdev.azurecr.io/kardex_proxy
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta-sim
         uses: docker/metadata-action@v5.0.0
         with:
           images: |
-            shelterdev.azurecr.io/kardex-sim
+            shelterdev.azurecr.io/kardex_sim
 
 
       - name: Build + Push Kardex Sim
