@@ -34,7 +34,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: camptocamp.azurecr.io
-          username: ${{ github.CAMPTOCAMP_ACR_USERNAME }}
+          username: ${{ secrets.CAMPTOCAMP_ACR_USERNAME }}
           password: ${{ secrets.CAMPTOCAMP_ACR_PASSWORD }}
 
       - name: Extract metadata (tags, labels) for Docker
