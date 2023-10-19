@@ -27,29 +27,32 @@ jobs:
       - name: Login to GHCR Shelter
         uses: docker/login-action@v1
         with:
-          registry: shelterdev.azurecr.io
-          username: ${{ secrets.SHELTER_DEV_ACR_USERNAME }}
-          password: ${{ secrets.SHELTER_DEV_ACR_PASSWORD }}
-      #- name: Login to GHCR Prod
-      #  uses: docker/login-action@v1
-      #  with:
-      #    registry: shelterdev.azurecr.io
-      #    username: ${{ github.repository_owner }}
-      #    password: ${{ secrets.GITHUB_TOKEN }}
+          registry: camptocampdev.azurecr.io
+          username: ${{ secrets.CAMPTOCAMP_DEV_ACR_USERNAME }}
+          password: ${{ secrets.CAMPTOCAMP_DEV_ACR_PASSWORD }}
+      - name: Login to GHCR Prod
+        uses: docker/login-action@v1
+        with:
+          registry: camptocamp.azurecr.io
+          username: ${{ github.CAMPTOCAMP_ACR_USERNAME }}
+          password: ${{ secrets.CAMPTOCAMP_ACR_PASSWORD }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta-proxy
         uses: docker/metadata-action@v5.0.0
         with:
           images: |
-            shelterdev.azurecr.io/kardex_proxy
+            camptocamp.azurecr.io/kardex-proxy
+            camptocampdev.azurecr.io/kardex-proxy
+
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta-sim
         uses: docker/metadata-action@v5.0.0
         with:
           images: |
-            shelterdev.azurecr.io/kardex_sim
+            camptocamp.azurecr.io/kardex-sim
+            camptocampdev.azurecr.io/kardex-sim
 
 
       - name: Build + Push Kardex Sim
